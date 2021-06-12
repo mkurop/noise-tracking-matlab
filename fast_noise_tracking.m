@@ -1,4 +1,4 @@
-function [noisePsd,N2,state] = fastNoiseTracking(prevSpeechPsd,noisyPsd,state)
+function [noisePsd,state] = fast_noise_tracking(prevSpeechPsd,noisyPsd,state)
 %FASTNOISETRACKING Function computing noise estimate using algorithm
 %proposed in 
 % Q.Zang et al., "Fast Nonstationary Noise Tracking"

@@ -1,8 +1,9 @@
-function [state] = initNoiseTracking(frame2,sampleRate)
+function [state] = init_noise_tracking(frame2,sampleRate)
 %INITNOISETRACKING This function initializes the state of the algorithm
 %   Input
-%     sampleRate - sampling rate in Hz
 %     frame2 - length of the fft after zero adding, preferably a power of 2
+%     sampleRate - sampling rate in Hz
+%     
 %   Output
 %     state - the initial algorithm state
 
