@@ -25,7 +25,9 @@ if state.frmNo == 1
     return
 end
 gamma_ = noisyPsd./state.noisePsd; % underscore to differentiate from the build-in gamma function
+
 ksi = max(state.alpha_ns * prevSpeechPsd./state.noisePsd + (1-state.alpha_ns)*max((gamma_-1),0),state.ksiFloor);
+
 v =gamma_./(ksi.*(ksi+1));
 N = 1./(ksi+1).^2.*exp(min(gamma(1e-5)*gammainc(v,1e-5,'upper'),10)).*sqrt(noisyPsd);
 N2 = N.*conj(N);
@@ -41,12 +43,15 @@ if state.gammaBufPos > 3
     state.gammaBufPos = 1;
 end
 % time averaging of gammaBuf
-gammaAvg = mean(state.gammaBuf(:,1:min(state.frmNo,3)),2);
+
+gammaAvg = mean(state.gammaBuf(:,1:min([state.frmNo,3])),2);
+
 gammaAvgF = gammaAvg; % frequency averaged time averaged gamma
 % frequency averaging of gammaBuf
 for i = 1:state.K
     gammaAvgF(i) = mean(gammaAvg(max(i-state.deltak,1):min(i+state.deltak,state.K)));
 end
+
 if any(isnan(gammaAvgF)) 
     disp('gammaAvgF')
     disp(state.frmNo)
@@ -58,6 +63,7 @@ I = gammaAvgF > state.Psi;
 state.p = state.alpha_p * state.p + (1-state.alpha_p)*I;
 % compute noise estimate
 alpha_N = state.alpha_n+(1-state.alpha_n)*state.p;
+
 if any(isnan(alpha_N))
     disp('alpha_N');
     disp(state.frmNo);
